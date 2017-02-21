@@ -6,7 +6,7 @@
         h4.card-header.bg-inverse.text-white {{ name }}
         img.card-img-top(src="http://placehold.jp/150x150.png")
         .list-group.list-group-flush
-          li.list-group-item 登録スキル数 10
+          li.list-group-item 登録スキル数 {{ actions.length }}
           li.list-group-item 達成済スキル数 3
 
       .card
@@ -88,7 +88,7 @@ import Skill from './Skill'
 
 export default {
   name: 'hello',
-  computed: mapGetters(['skill', 'name', 'jobs', 'skills', 'select']),
+  computed: mapGetters(['skill', 'name', 'jobs', 'skills', 'actions', 'select']),
   methods: mapActions([APPEND_SKILL_TO_ROOT, TOGGLE_SELECT_CARD, APPEND_SKILL_TO_JOB, APPEND_ACTION_TO_SKILL]),
   components: { Skill }
 }

@@ -75,6 +75,15 @@ const getters = {
       }
     }
     return skills
+  },
+  actions: state => {
+    let actions = []
+    for (let job of state.user.jobs) {
+      for (let skill of job.skills) {
+        actions = actions.concat(skill.actions)
+      }
+    }
+    return actions
   }
 }
 
