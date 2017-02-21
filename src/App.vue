@@ -7,7 +7,7 @@
     crossorigin="anonymous"
   )
   nav.navbar.navbar-inverse.bg-inverse
-    h1.navbar-brand.mb-0 life-target
+    h1.navbar-brand.mb-0 LifeTarget
   router-view
 </template>
 

@@ -3,7 +3,7 @@
   .row
     .col-4
       .card
-        h4.card-header.bg-inverse.text-white 山田太郎
+        h4.card-header.bg-inverse.text-white {{ name }}
         img.card-img-top(src="http://placehold.jp/150x150.png")
         .list-group.list-group-flush
           li.list-group-item 登録スキル数 10
@@ -47,29 +47,49 @@
               h5.card-title {{ skill }}
               p.card-text {{ skill }}の説明
             .col
-              button.btn.btn-danger.btn-sm スキルルートに追加
-              button.btn.btn-primary.btn-sm ぶら下げる
+              button.btn.btn-danger.btn-sm(@click="APPEND_SKILL_TO_ROOT(skill)") スキルルートに追加
+              button.btn.btn-primary.btn-sm(@click="TOGGLE_SELECT_CARD") ぶら下げる
+
+      .card#select(v-if="select")
+        h4.card-header.bg-primary.text-white ぶら下げ先
+        .list-group.list-group-flush
+          li.list-group-item.list-group-item-action(
+            type="button",
+            v-for="job in jobs",
+            @click="APPEND_SKILL_TO_JOB(job.name)"
+          ) → {{ job.name }}
+
+      .card#select(v-if="select")
+        h4.card-header.bg-primary.text-white ぶら下げ先
+        .list-group.list-group-flush
+          li.list-group-item.list-group-item-action(
+            type="button",
+            v-for="skill in skills",
+            @click="APPEND_ACTION_TO_SKILL(skill)"
+          ) → ＜{{ skill }}＞
+
 
       .card
         h4.card-header.bg-inverse.text-white 私のスキル
-        .card-block
-          h5 運動
-          h6 ＜ランニング＞
-          p 道具を揃える → 5km
-        .card-block
-          h5 IT
-          h6 ＜開発＞
-          p Eclipse → SDK → Hello World
+        .card-block(v-for="job in jobs")
+          h5 {{ job.name }}
+          hr
+          div(v-for="skill in job.skills")
+            h6 ＜{{ skill.name }}＞
+            span(v-for="(action, index) in skill.actions") {{ index !==0 ? ' → ' : '' }} {{ action }}
+            hr
 
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import { APPEND_SKILL_TO_ROOT, TOGGLE_SELECT_CARD, APPEND_SKILL_TO_JOB, APPEND_ACTION_TO_SKILL } from '../vuex/mutation-types'
 import Skill from './Skill'
 
 export default {
   name: 'hello',
-  computed: mapGetters(['skill']),
+  computed: mapGetters(['skill', 'name', 'jobs', 'skills', 'select']),
+  methods: mapActions([APPEND_SKILL_TO_ROOT, TOGGLE_SELECT_CARD, APPEND_SKILL_TO_JOB, APPEND_ACTION_TO_SKILL]),
   components: { Skill }
 }
 
@@ -84,10 +104,10 @@ export default {
     font-size 18px
     padding 4px 8px
   h5
-    font-size 18
+    font-size 18px
     px
     padding 2px 8px
-  li, p
+  li, p, span
     font-size 12px
     padding 2px 8px
   button
@@ -97,5 +117,10 @@ export default {
   ul,li
     padding 2px 4px
     border sold 0px black
+
+#select
+  li
+    font-size 18px
+    padding 2px 12px
     
 </style>
